@@ -4,35 +4,73 @@
 
 # Initial value just for style purposes.
 USE=""
-LINUX_FIRMWARE=""
 
 USE="${USE} orangepi800"
+
+# Disable touchpad wakeup since it can't be turned off dynamically when the
+# system is converted to tablet mode while it's suspended.
+#USE="${USE} -touchpad_wakeup"
+
+# Use ext4 crypto
 USE="${USE} direncryption"
-USE="${USE} -cr50_onboard"
-USE="${USE} -tpm -tpm2"
-USE="${USE} kernel-4_4"
+
+# Disable unibuild on this legacy board. This is only for existing (as of Jan 2019)
+# boards as all new boards must be unibuild enabled moving forward. Do not copy this
+# to new boards as it will be rejected. See
+# https://chromium.googlesource.com/chromiumos/platform2/+/HEAD/chromeos-config/README.md
+# for further details about chromeos-config, which is the required entry point for
+# unified builds.
+USE="${USE} -unibuild"
+
+# Disable instant tethering due to a lack of hardware vendor support.
+#USE="${USE} disable_instant_tethering"
+
+# Disable WPA3-SAE, because mwifiex (Marvell WiFi) does not support it. See
+# also b/184395063.
+USE="${USE} -wpa3_sae"
+USE="${USE} orangepi-kernel"
+#USE="${USE} fsverity"
 USE="${USE} bluetooth"
-USE="${USE} kiosk_next"
-USE="${USE} fbconsole usb_gadget vtconsole cec dwc2_dual_role"
+#USE="${USE} kiosk_next"
+USE="${USE} fbconsole usb_gadget vtconsole"
 USE="${USE} boot_dts_device_tree include_vmlinuz"
 USE="${USE} nfs vfat"
 USE="${USE} kvm_host containers lxc"
-USE="${USE} cros_disks scanner ml_service power_management vpn"
-USE="${USE} trim_supported cups usbguard"
+#USE="${USE} scanner ml_service"
+#USE="${USE} trim_supported cups"
+USE="${USE} kernel-5_10"
+#USE="${USE} -opengl opengles"
 
-#USE="${USE} cros_host"
+#USE="${USE} direncription_allow_v2"
 
-LINUX_FIRMWARE="${LINUX_FIRMWARE} rockchip-dptx"
+USE="${USE} -tpm tpm2_simulator tpm2 vtpm_proxy tpm2_simulator_manufacturer"
 
-INPUT_DEVICES="synaptics cmt"
+# No Cr50 (override baseboard-herobrine)
+USE="${USE} -cr50_onboard"
 
-# All firmwares to build from the EC code base
-EC_FIRMWARE=""
+# No EC (override baseboard-herobrine)
+USE="${USE} -cros_ec -eclog"
+
+#USE="${USE} -cros_disks -cros_host -cros_p2p -mojo"
+#USE="${USE} -bluetooth -cellular -cras -cups -debugd -encrypted_stateful -kmod"
+USE="${USE} -power_management shill -systemd"
+
+# Nullify all firmware and ec-related USE flags
+USE="${USE} -coreboot -bootimage"
+
+# Stateful partition does not need to be encrypted
+USE="${USE} -encrypted_stateful -acpi_ac"
+
+USE="${USE} dlc_test"
+
+ACCEPT_LICENSE="* Google-TOS"
+#JAVA_HOME="/usr/lib/jvm/openjdk-bin-11"
+CHROME_ORIGIN="LOCAL_SOURCE"
+#NO_AUTH_BOTO_CONFIG=/home/test/.boto
 
 TTY_CONSOLE="ttyS2"
 
+COLLISION_IGNORE="/lib/firmware"
+
 CHROMEOS_KERNEL_ARCH=arm64
 CHROMEOS_KERNEL_CONFIG="arch/arm64/configs/rockchip_linux_defconfig"
-
-ACCEPT_LICENSE="* Google-TOS"
-CHROME_ORIGIN="LOCAL_SOURCE"

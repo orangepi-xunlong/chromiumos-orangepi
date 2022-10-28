@@ -1,3 +1,1 @@
-sys-kernel/rockchip-kernel -clang -arm boot_dts_device_tree
-net-wireless/bluez bt_deprecated_tools
-chromeos-base/chromeos-chrome chrome_media
+sys-kernel/chromeos-kernel-4_4 frozen_gcc -clang -lld -llvm_ias

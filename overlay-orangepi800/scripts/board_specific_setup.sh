@@ -8,7 +8,7 @@
 # KERN-A/B partition (with included dts)
 skip_kernelblock_install=1
 
-install_rockpro64_bootloader() {
+install_bootloader() {
   local image="$1"
 
   info "Installing uboot firmware on ${image}"
@@ -20,7 +20,7 @@ install_rockpro64_bootloader() {
   info "Installed bootloader."
 }
 
-install_rockpro64_efi_boot_scr() {
+install_efi_boot_scr() {
   local image="$1"
   local efi_offset_sectors=$(partoffset "$1" 12)
   local efi_size_sectors=$(partsize "$1" 12)
@@ -49,7 +49,7 @@ make_root_a_b_bootable() {
 }
 
 board_setup() {
-  install_rockpro64_bootloader "$1"
-  install_rockpro64_efi_boot_scr "$1"
+  install_bootloader "$1"
+  install_efi_boot_scr "$1"
   # make_root_a_b_bootable "$1"
 }

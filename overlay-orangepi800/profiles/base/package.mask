@@ -1,0 +1,6 @@
+sys-boot/u-boot::chromiumos
+sys-kernel/chromeos-kernel-5_10::chromiumos
+sys-kernel/chromeos-kernel-4_4::chromiumos
+media-libs/mesa
+media-libs/minigbm::patches
+chromeos-base/cros-disks::patches
